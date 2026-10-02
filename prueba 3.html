@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZIXELLA - Professional Beats & Licensing Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0a0a0a',
+                        cardbg: '#141414',
+                        bordercolor: '#262626',
+                        accentorange: '#e58e26',
+                        textmuted: '#888888'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #f3f4f6;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #404040;
+        }
+        .waveform-bar {
+            transition: height 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0a] text-gray-100 min-h-screen flex flex-col justify-between selection:bg-orange-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#262626] px-4 md:px-8 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-6">
+            <a href="#" onclick="switchTab('beats')" class="flex items-center space-x-3 text-xl font-bold tracking-wider uppercase group">
+                <!-- Custom ZIXELLA Logo Badge representing 'portada.png' geometric Z design -->
+                <div class="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center shadow-lg border border-orange-400/30 transform group-hover:scale-105 transition">
+                    <span class="text-black font-black text-base tracking-tighter">Z</span>
+                </div>
+                <span class="text-white tracking-widest">ZIXELLA</span>
+            </a>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-gray-400">
+                <button onclick="switchTab('beats')" class="nav-link text-white hover:text-white transition">Beats</button>
+                <button onclick="switchTab('soundkits')" class="nav-link hover:text-white transition">Sound Kits</button>
+                <button onclick="switchTab('services')" class="nav-link hover:text-white transition">Services</button>
+                <button onclick="switchTab('contact')" class="nav-link hover:text-white transition">Contact</button>
+            </nav>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button onclick="toggleSearchModal()" class="text-gray-400 hover:text-white text-lg p-2 transition">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <button onclick="toggleCart()" class="relative flex items-center space-x-2 bg-[#141414] border border-[#262626] hover:border-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition">
+                <i class="fa-solid fa-cart-shopping text-orange-500"></i>
+                <span id="cart-total-header">$0.00</span>
+                <span id="cart-badge" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">0</span>
+            </button>
+            <button onclick="toggleMobileMenu()" class="md:hidden text-gray-400 hover:text-white text-xl p-2">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow pb-32">
+        
+        <!-- ================= BEATS TAB ================= -->
+        <div id="tab-beats" class="tab-content">
+            
+            <!-- Active Hero Player Section -->
+            <section class="relative bg-gradient-to-b from-[#1a1412] to-[#0a0a0a] border-b border-[#262626] py-12 px-4 md:px-12">
+                <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                    <!-- Album Art & Play Button -->
+                    <div class="relative group w-64 h-64 md:w-80 md:h-80 flex-shrink-0 rounded-xl overflow-hidden shadow-2xl border border-[#333]">
+                        <img id="hero-img" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80" alt="Active Track" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                            <button onclick="togglePlayPause()" id="hero-play-btn" class="w-20 h-20 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center text-2xl shadow-lg transition transform hover:scale-105">
+                                <i class="fa-solid fa-play ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Track Details -->
+                    <div class="flex-grow text-center md:text-left">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs text-gray-400 mb-2">
+                            <span class="bg-[#222] px-2.5 py-1 rounded text-orange-400 font-semibold uppercase tracking-wider">Featured Track</span>
+                            <span id="hero-bpm">🔥 140 BPM</span>
+                            <span id="hero-key">🎵 C#m</span>
+                            <span id="hero-date">📅 September 25, 2026</span>
+                        </div>
+                        <h1 id="hero-title" class="text-3xl md:text-5xl font-extrabold text-white mb-3">EXTINCTION - [ Travis Scott x Don Toliver ]</h1>
+                        <p class="text-gray-400 text-sm mb-6">Produced by ZIXELLA BEATS</p>
+                        
+                        <!-- Quick Actions -->
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                            <button onclick="openLicenseModal(currentTrackIndex)" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-lg text-sm flex items-center space-x-2 transition shadow-lg">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <span id="hero-price-btn">$39.99</span>
+                            </button>
+                            <button onclick="downloadFreeDemo()" class="bg-[#222] hover:bg-[#333] border border-[#333] text-white font-medium px-5 py-3 rounded-lg text-sm flex items-center space-x-2 transition">
+                                <i class="fa-solid fa-download"></i>
+                                <span>DOWNLOAD</span>
+                            </button>
+                            <button onclick="shareTrack()" class="bg-[#222] hover:bg-[#333] border border-[#333] text-white font-medium px-5 py-3 rounded-lg text-sm flex items-center space-x-2 transition">
+                                <i class="fa-solid fa-share-nodes"></i>
+                                <span>SHARE</span>
+                            </button>
+                        </div>
+
+                        <!-- Tags -->
+                        <div id="hero-tags" class="flex flex-wrap justify-center md:justify-start gap-2 mt-6">
+                            <span class="bg-[#1a1a1a] border border-[#333] px-3 py-1 rounded-full text-xs text-gray-300">Don Toliver</span>
+                            <span class="bg-[#1a1a1a] border border-[#333] px-3 py-1 rounded-full text-xs text-gray-300">Travis Scott</span>
+                            <span class="bg-[#1a1a1a] border border-[#333] px-3 py-1 rounded-full text-xs text-gray-300">Trap</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Waveform Interactive Bar -->
+                <div class="max-w-7xl mx-auto mt-10">
+                    <div class="flex items-center justify-between text-xs text-gray-500 mb-2">
+                        <span id="current-time">0:00</span>
+                        <div class="flex items-center space-x-4">
+                            <span id="track-status-indicator" class="text-orange-500 font-medium">Ready to play</span>
+                            <span id="total-duration">03:00</span>
+                        </div>
+                    </div>
+                    <div id="waveform-container" onclick="seekAudio(event)" class="h-16 bg-[#121212] border border-[#262626] rounded-xl flex items-center px-4 gap-[3px] cursor-pointer overflow-hidden relative">
+                        <!-- Dynamic waveform bars generated via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filters & Search Bar -->
+            <section class="max-w-7xl mx-auto px-4 md:px-12 py-8">
+                <h2 class="text-2xl font-bold mb-6 text-white">Beats Catalog</h2>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mb-6">
+                    <select class="bg-[#141414] border border-[#262626] text-gray-300 text-sm rounded-lg p-3 outline-none focus:border-orange-500">
+                        <option>All Category</option>
+                        <option>Type Beats</option>
+                        <option>Instrumentals</option>
+                    </select>
+                    <select class="bg-[#141414] border border-[#262626] text-gray-300 text-sm rounded-lg p-3 outline-none focus:border-orange-500">
+                        <option>All BPM</option>
+                        <option>80 - 100 BPM</option>
+                        <option>100 - 130 BPM</option>
+                        <option>130 - 160 BPM</option>
+                    </select>
+                    <select class="bg-[#141414] border border-[#262626] text-gray-300 text-sm rounded-lg p-3 outline-none focus:border-orange-500">
+                        <option>All Moods</option>
+                        <option>Dark</option>
+                        <option>Aggressive</option>
+                        <option>Melodic</option>
+                    </select>
+                    <select class="bg-[#141414] border border-[#262626] text-gray-300 text-sm rounded-lg p-3 outline-none focus:border-orange-500">
+                        <option>All Genres</option>
+                        <option>Trap</option>
+                        <option>Reggaeton</option>
+                        <option>R&B</option>
+                    </select>
+                    <select class="bg-[#141414] border border-[#262626] text-gray-300 text-sm rounded-lg p-3 outline-none focus:border-orange-500">
+                        <option>Default Sort</option>
+                        <option>Newest</option>
+                        <option>Most Popular</option>
+                        <option>Price: Low to High</option>
+                    </select>
+                    <select class="bg-[#141414] border border-[#262626] text-gray-300 text-sm rounded-lg p-3 outline-none focus:border-orange-500">
+                        <option>Default List</option>
+                        <option>Compact View</option>
+                    </select>
+                </div>
+
+                <!-- Search Input inside Beats section -->
+                <div class="relative mb-8">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="beat-search-input" onkeyup="filterBeats()" placeholder="What type of track are you looking for?" class="w-full bg-[#141414] border border-[#262626] rounded-lg pl-12 pr-4 py-3.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition">
+                </div>
+
+                <!-- Beats Table Header -->
+                <div class="hidden md:grid grid-cols-12 text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 border-b border-[#262626]">
+                    <div class="col-span-6">Title</div>
+                    <div class="col-span-2">Time</div>
+                    <div class="col-span-1">BPM</div>
+                    <div class="col-span-3 text-right">Tags & Actions</div>
+                </div>
+
+                <!-- Beats List Container -->
+                <div id="beats-list" class="divide-y divide-[#1a1a1a]">
+                    <!-- Populated dynamically via JavaScript -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= SOUND KITS TAB ================= -->
+        <div id="tab-soundkits" class="tab-content hidden max-w-7xl mx-auto px-4 md:px-12 py-12">
+            <h2 class="text-3xl font-extrabold mb-2 text-white">Sound Kits & Presets</h2>
+            <p class="text-gray-400 text-sm mb-8">Professional drum kits, melody loops, and synth presets crafted by ZIXELLA.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-[#141414] border border-[#262626] rounded-xl overflow-hidden group hover:border-orange-500 transition">
+                    <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=500&auto=format&fit=crop&q=80" alt="Kit" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <span class="text-xs text-orange-500 font-semibold uppercase">Drum Kit</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-2">ZIXELLA - Apocalypse Vol. 1</h3>
+                        <p class="text-xs text-gray-400 mb-4">150+ Custom 808s, Snares, Hi-Hats and FX used in top Billboard tracks.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-white">$29.99</span>
+                            <button onclick="addToCart('ZIXELLA - Apocalypse Vol. 1', 29.99, 'Sound Kit')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#141414] border border-[#262626] rounded-xl overflow-hidden group hover:border-orange-500 transition">
+                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80" alt="Kit" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <span class="text-xs text-orange-500 font-semibold uppercase">Melody Loop Kit</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-2">Dark Ambient Melodies</h3>
+                        <p class="text-xs text-gray-400 mb-4">25 Royalty-Free compositions with stems and BPM labels included.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-white">$24.99</span>
+                            <button onclick="addToCart('Dark Ambient Melodies', 24.99, 'Sound Kit')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#141414] border border-[#262626] rounded-xl overflow-hidden group hover:border-orange-500 transition">
+                    <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&auto=format&fit=crop&q=80" alt="Kit" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <span class="text-xs text-orange-500 font-semibold uppercase">Preset Bank</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-2">Omnisphere & Serum Bank</h3>
+                        <p class="text-xs text-gray-400 mb-4">60 cutting-edge presets inspired by Travis Scott and Mike Dean.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold text-white">$34.99</span>
+                            <button onclick="addToCart('Omnisphere & Serum Bank', 34.99, 'Sound Kit')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SERVICES TAB ================= -->
+        <div id="tab-services" class="tab-content hidden max-w-7xl mx-auto px-4 md:px-12 py-12">
+            <h2 class="text-3xl font-extrabold mb-2 text-white">Mixing & Mastering Services</h2>
+            <p class="text-gray-400 text-sm mb-8">Get your vocals and beats mixed to major label standards by ZIXELLA.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-[#141414] border border-[#262626] rounded-xl p-8 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full font-semibold">Professional Tier</span>
+                        <h3 class="text-2xl font-bold text-white mt-4 mb-2">Vocal Mixing & Mastering</h3>
+                        <p class="text-sm text-gray-400 mb-6">Send us your recorded vocal stems and beat, and we'll deliver a radio-ready commercial master.</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                            <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> Pitch correction & vocal alignment</li>
+                            <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> Advanced EQ, Compression & Saturation</li>
+                            <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> 3 Revisions included</li>
+                            <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> 48-hour turnaround time</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-[#262626]">
+                        <span class="text-2xl font-bold text-white">$120.00</span>
+                        <button onclick="addToCart('Vocal Mixing & Mastering Service', 120.00, 'Service')" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg text-sm font-semibold transition">Book Service</button>
+                    </div>
+                </div>
+
+                <div class="bg-[#141414] border border-[#262626] rounded-xl p-8 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full font-semibold">Custom Production</span>
+                        <h3 class="text-2xl font-bold text-white mt-4 mb-2">Exclusive Custom Beat</h3>
+                        <p class="text-sm text-gray-400 mb-6">Work directly with ZIXELLA via video call to build a 100% custom exclusive instrumental from scratch.</p>
+                        <ul class="space-y-3 text-sm text-gray-300 mb-8">
+                            <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> Full exclusive commercial rights</li>
+                            <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> Trackout stems & project file included</li>
+                            <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> Unlimited revisions during session</li>
+                            <li><i class="fa-solid fa-check text-orange-500 mr-2"></i> Direct collaboration with ZIXELLA</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-[#262626]">
+                        <span class="text-2xl font-bold text-white">$350.00</span>
+                        <button onclick="addToCart('Exclusive Custom Beat Production', 350.00, 'Service')" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg text-sm font-semibold transition">Book Service</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= CONTACT TAB ================= -->
+        <div id="tab-contact" class="tab-content hidden max-w-3xl mx-auto px-4 py-12">
+            <h2 class="text-3xl font-extrabold text-center mb-2 text-white">Contact ZIXELLA</h2>
+            <p class="text-gray-400 text-sm text-center mb-8">Have questions about exclusive licenses, custom work, or collaborations? Send us a message.</p>
+            
+            <div class="bg-[#141414] border border-[#262626] rounded-xl p-8">
+                <form onsubmit="handleContactSubmit(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs uppercase text-gray-400 font-semibold mb-2">Your Name</label>
+                            <input type="text" required class="w-full bg-[#0a0a0a] border border-[#262626] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-orange-500" placeholder="Artist / Producer Name">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase text-gray-400 font-semibold mb-2">E-Mail Address</label>
+                            <input type="email" required class="w-full bg-[#0a0a0a] border border-[#262626] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-orange-500" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-gray-400 font-semibold mb-2">Subject</label>
+                        <input type="text" required class="w-full bg-[#0a0a0a] border border-[#262626] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-orange-500" placeholder="Exclusive Inquiry / Custom Beat">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-gray-400 font-semibold mb-2">Message</label>
+                        <textarea rows="5" required class="w-full bg-[#0a0a0a] border border-[#262626] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-orange-500" placeholder="Write your message here..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-lg text-sm transition">SEND MESSAGE</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= LICENSING INFO SECTION ================= -->
+        <section class="max-w-7xl mx-auto px-4 md:px-12 py-16 border-t border-[#262626] mt-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-white mb-2">Licensing Info</h2>
+                <p class="text-gray-400 text-sm">Choose the right license tier for your project release.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <!-- Basic -->
+                <div class="bg-[#141414] border border-[#262626] rounded-xl p-6 flex flex-col justify-between hover:border-gray-500 transition">
+                    <div>
+                        <h4 class="font-bold text-white text-lg mb-1">Basic License</h4>
+                        <div class="text-2xl font-extrabold text-orange-500 mb-4">$39.99</div>
+                        <p class="text-xs text-gray-400 font-semibold mb-4">Limited Profit Use</p>
+                        <ul class="space-y-2 text-xs text-gray-300 mb-6">
+                            <li>• Untagged MP3 file</li>
+                            <li>• Limited Profit Use</li>
+                            <li>• Good for Soundcloud</li>
+                            <li>• Up to 15,000 streams</li>
+                        </ul>
+                    </div>
+                    <button onclick="openLicenseModal(currentTrackIndex)" class="w-full bg-[#222] hover:bg-[#333] text-white py-2.5 rounded-lg text-xs font-semibold transition">READ LICENSE</button>
+                </div>
+
+                <!-- Premium -->
+                <div class="bg-[#141414] border border-[#262626] rounded-xl p-6 flex flex-col justify-between hover:border-gray-500 transition">
+                    <div>
+                        <h4 class="font-bold text-white text-lg mb-1">Premium License</h4>
+                        <div class="text-2xl font-extrabold text-orange-500 mb-4">$59.99</div>
+                        <p class="text-xs text-gray-400 font-semibold mb-4">MP3 & WAV</p>
+                        <ul class="space-y-2 text-xs text-gray-300 mb-6">
+                            <li>• Untagged MP3 + WAV</li>
+                            <li>• Commercial Use</li>
+                            <li>• Spotify & Apple Music</li>
+                            <li>• Up to 100,000 streams</li>
+                        </ul>
+                    </div>
+                    <button onclick="openLicenseModal(currentTrackIndex)" class="w-full bg-[#222] hover:bg-[#333] text-white py-2.5 rounded-lg text-xs font-semibold transition">READ LICENSE</button>
+                </div>
+
+                <!-- Popular Stems -->
+                <div class="bg-[#141414] border-2 border-orange-500 rounded-xl p-6 flex flex-col justify-between relative shadow-xl">
+                    <span class="absolute -top-3 left-1/2 -transform -translate-x-1/2 bg-orange-500 text-white text-[10px] uppercase font-bold px-3 py-0.5 rounded-full">⭐ Popular</span>
+                    <div>
+                        <h4 class="font-bold text-white text-lg mb-1">Premium + Stems</h4>
+                        <div class="text-2xl font-extrabold text-orange-500 mb-4">$99.99</div>
+                        <p class="text-xs text-gray-400 font-semibold mb-4">Commercial Use</p>
+                        <ul class="space-y-2 text-xs text-gray-300 mb-6">
+                            <li>• MP3 + WAV + STEMS</li>
+                            <li>• Includes Premium License</li>
+                            <li>• Trackout files included</li>
+                            <li>• Perfect for mixing</li>
+                        </ul>
+                    </div>
+                    <button onclick="openLicenseModal(currentTrackIndex)" class="w-full bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-lg text-xs font-semibold transition">READ LICENSE</button>
+                </div>
+
+                <!-- Unlimited -->
+                <div class="bg-[#141414] border border-[#262626] rounded-xl p-6 flex flex-col justify-between hover:border-gray-500 transition">
+                    <div>
+                        <h4 class="font-bold text-white text-lg mb-1">Unlimited License</h4>
+                        <div class="text-2xl font-extrabold text-orange-500 mb-4">$199.99</div>
+                        <p class="text-xs text-gray-400 font-semibold mb-4">Commercial Use</p>
+                        <ul class="space-y-2 text-xs text-gray-300 mb-6">
+                            <li>• Untagged MP3 + WAV + STEMS</li>
+                            <li>• Unlimited Streams</li>
+                            <li>• Music Videos & Radio</li>
+                            <li>• Full Commercial Rights</li>
+                        </ul>
+                    </div>
+                    <button onclick="openLicenseModal(currentTrackIndex)" class="w-full bg-[#222] hover:bg-[#333] text-white py-2.5 rounded-lg text-xs font-semibold transition">READ LICENSE</button>
+                </div>
+
+                <!-- Exclusive -->
+                <div class="bg-[#141414] border border-[#262626] rounded-xl p-6 flex flex-col justify-between hover:border-gray-500 transition">
+                    <div>
+                        <h4 class="font-bold text-white text-lg mb-1">Exclusive License</h4>
+                        <div class="text-xl font-extrabold text-orange-500 mb-4">MAKE AN OFFER</div>
+                        <p class="text-xs text-gray-400 font-semibold mb-4">Exclusive Lease</p>
+                        <ul class="space-y-2 text-xs text-gray-300 mb-6">
+                            <li>• Beat removed from store</li>
+                            <li>• Full Ownership Transfer</li>
+                            <li>• Unlimited everything</li>
+                            <li>• Direct artist contract</li>
+                        </ul>
+                    </div>
+                    <button onclick="openLicenseModal(currentTrackIndex)" class="w-full bg-[#222] hover:bg-[#333] text-white py-2.5 rounded-lg text-xs font-semibold transition">READ LICENSE</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#050505] border-t border-[#262626] py-12 px-4 md:px-12 text-sm text-gray-400">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+                <h3 class="text-white font-bold mb-4 uppercase tracking-wider text-xs">ZIXELLA BEATS</h3>
+                <p class="text-xs text-gray-500 leading-relaxed mb-4">Official licensing and beat store for producer ZIXELLA.</p>
+                <div class="flex space-x-3 text-lg">
+                    <a href="#" class="w-8 h-8 rounded-full bg-[#141414] border border-[#262626] flex items-center justify-center hover:text-white transition"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-[#141414] border border-[#262626] flex items-center justify-center hover:text-white transition"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-[#141414] border border-[#262626] flex items-center justify-center hover:text-white transition"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-[#141414] border border-[#262626] flex items-center justify-center hover:text-white transition"><i class="fa-brands fa-soundcloud text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-[#141414] border border-[#262626] flex items-center justify-center hover:text-white transition"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-4 uppercase tracking-wider text-xs">Navigation</h3>
+                <ul class="space-y-2 text-xs">
+                    <li><button onclick="switchTab('beats')" class="hover:text-white transition">Home / Beats</button></li>
+                    <li><button onclick="switchTab('soundkits')" class="hover:text-white transition">Sound Kits</button></li>
+                    <li><button onclick="switchTab('services')" class="hover:text-white transition">Services</button></li>
+                    <li><button onclick="switchTab('contact')" class="hover:text-white transition">Contact</button></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-4 uppercase tracking-wider text-xs">Legal & Terms</h3>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#" class="hover:text-white transition">Licensing Info</a></li>
+                    <li><a href="#" class="hover:text-white transition">Terms of Use</a></li>
+                    <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition">Refund Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-white font-bold mb-4 uppercase tracking-wider text-xs">Currency & Region</h3>
+                <select class="w-full bg-[#141414] border border-[#262626] text-gray-300 text-xs rounded-lg p-2.5 outline-none mb-4">
+                    <option>USD ($) United States</option>
+                    <option>EUR (€) European Union</option>
+                    <option>GBP (£) United Kingdom</option>
+                    <option>VES (Bs) Venezuela</option>
+                </select>
+                <p class="text-[11px] text-gray-600">Secure 256-bit SSL encryption powered by ZIXELLA Checkout.</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-6 border-t border-[#1a1a1a] text-center text-xs text-gray-600">
+            © 2026 ZIXELLA BEATS. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- ================= MODALS & SLIDERS ================= -->
+
+    <!-- License Selection Modal -->
+    <div id="license-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-[#141414] border border-[#262626] rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+            <button onclick="closeLicenseModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-bold text-white mb-6">Choose contract type</h3>
+            
+            <div id="license-options-list" class="space-y-4">
+                <!-- Dynamically populated license choices -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar Drawer -->
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[#141414] border-l border-[#262626] shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+        <div class="p-6 border-b border-[#262626] flex items-center justify-between">
+            <h3 class="text-lg font-bold text-white">YOUR CART (<span id="cart-count">0</span>):</h3>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-4">
+            <!-- Cart items -->
+            <div class="text-center text-gray-500 py-12">Your cart is empty.</div>
+        </div>
+
+        <div class="p-6 border-t border-[#262626] bg-[#0c0c0c]">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-sm text-gray-400">Subtotal before taxes</span>
+                <span id="cart-subtotal" class="text-lg font-bold text-orange-500">$0.00</span>
+            </div>
+            <button onclick="proceedToCheckout()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-lg text-sm transition mb-3">PROCEED TO CHECKOUT</button>
+            <button onclick="toggleCart()" class="w-full bg-[#222] hover:bg-[#333] text-white py-2.5 rounded-lg text-xs font-semibold transition">CONTINUE SHOPPING</button>
+        </div>
+    </div>
+
+    <!-- Checkout / Payment Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-[#141414] border border-[#262626] rounded-xl max-w-xl w-full p-6 relative">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-2xl font-bold text-white mb-6">Payment Options</h3>
+            
+            <div class="bg-[#0c0c0c] border border-[#262626] rounded-lg p-4 mb-6">
+                <div class="text-xs text-gray-400 mb-1">Billing Location</div>
+                <div class="text-sm font-semibold text-white flex justify-between items-center">
+                    <span>Venezuela, Lechería 6016</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-500"></i>
+                </div>
+            </div>
+
+            <div class="border-t border-[#262626] pt-4 mb-6 space-y-3">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-400">Item Total</span>
+                    <span id="checkout-modal-total" class="text-white font-bold">$39.99</span>
+                </div>
+                <div class="flex justify-between text-base font-bold pt-2 border-t border-[#262626]">
+                    <span class="text-white">Total</span>
+                    <span id="checkout-modal-final" class="text-orange-500">$39.99</span>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <button onclick="completePayment('PayPal')" class="w-full bg-[#ffc439] hover:bg-[#f4bc32] text-black font-bold py-3.5 rounded-lg text-sm transition flex items-center justify-center space-x-2">
+                    <i class="fa-brands fa-paypal text-lg text-blue-900"></i>
+                    <span>Pay with PayPal</span>
+                </button>
+                <button onclick="completePayment('Credit Card')" class="w-full bg-[#222] hover:bg-[#333] border border-[#333] text-white font-semibold py-3.5 rounded-lg text-sm transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-credit-card text-orange-500"></i>
+                    <span>Tarjeta de débito o crédito</span>
+                </button>
+            </div>
+            
+            <p class="text-[11px] text-center text-gray-500 mt-4">You are checking out as @zixella. By paying you agree to our Terms of Service & Refund Policy.</p>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-[#141414] border border-orange-500 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-orange-500 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium">Item added to cart!</span>
+    </div>
+
+    <script>
+        // Track database
+        const tracks = [
+            { id: 0, title: "EXTINCTION - [ Travis Scott x Don Toliver ]", artist: "ZIXELLA", time: "02:58", bpm: 140, key: "C#m", date: "September 25, 2026", img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80", tags: ["Don Toliver", "Travis Scott", "Trap"], price: 39.99 },
+            { id: 1, title: "MANHUNT - [ Travis Scott x Don Toliver ]", artist: "ZIXELLA", time: "02:57", bpm: 135, key: "Am", date: "September 20, 2026", img: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&auto=format&fit=crop&q=80", tags: ["hip hop", "travis scott"], price: 39.99 },
+            { id: 2, title: "DOOMSDAY - [ Travis Scott x Don Toliver ]", artist: "ZIXELLA", time: "02:50", bpm: 135, key: "Gm", date: "September 18, 2026", img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&auto=format&fit=crop&q=80", tags: ["don toliver", "travis scott"], price: 39.99 },
+            { id: 3, title: "VAPOR | ZIXELLA x Porter Robinson Type Beat", artist: "ZIXELLA", time: "03:25", bpm: 150, key: "F#m", date: "September 15, 2026", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80", tags: ["post malone", "sad"], price: 29.99 },
+            { id: 4, title: "OCEAN | Feid x Mora Type Beat", artist: "ZIXELLA", time: "03:15", bpm: 90, key: "Dm", date: "September 12, 2026", img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&auto=format&fit=crop&q=80", tags: ["feid", "mora"], price: 39.99 },
+            { id: 5, title: "AVENTURA | Feid, Rauw Alejandro Type Beat", artist: "ZIXELLA", time: "02:48", bpm: 86, key: "Em", date: "September 10, 2026", img: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&auto=format&fit=crop&q=80", tags: ["feid", "rauw alejandro"], price: 39.99 },
+            { id: 6, title: "SAD PERREO! | Feid x Bad Bunny Type Beat", artist: "ZIXELLA", time: "03:30", bpm: 80, key: "Bm", date: "September 05, 2026", img: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80", tags: ["bad bunny", "dancehall"], price: 39.99 },
+            { id: 7, title: "DOPPELGÄNGER - [ Travis Scott x Don Toliver ]", artist: "ZIXELLA", time: "02:50", bpm: 135, key: "C#m", date: "September 01, 2026", img: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=600&auto=format&fit=crop&q=80", tags: ["Don Toliver", "Travis Scott"], price: 39.99 },
+            { id: 8, title: "WINTER - [ Travis Scott x Don Toliver ]", artist: "ZIXELLA", time: "02:38", bpm: 145, key: "Fm", date: "August 28, 2026", img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&auto=format&fit=crop&q=80", tags: ["rap", "don toliver"], price: 39.99 },
+            { id: 9, title: "MONTANA - [ Travis Scott x Don Toliver ]", artist: "ZIXELLA", time: "03:03", bpm: 140, key: "Gm", date: "August 24, 2026", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80", tags: ["hip hop", "travis scott"], price: 39.99 }
+        ];
+
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+        let cart = [];
+        let playbackInterval = null;
+        let currentTimeSeconds = 0;
+        const totalDurationSeconds = 180; // 3:00
+
+        // Initialize App on load
+        window.onload = function() {
+            renderBeatsList(tracks);
+            generateWaveformBars();
+            updateHeroSection(0);
+        };
+
+        // Render Beats Table List
+        function renderBeatsList(data) {
+            const container = document.getElementById('beats-list');
+            container.innerHTML = '';
+
+            if (data.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-gray-500">No tracks found matching your search.</div>`;
+                return;
+            }
+
+            data.forEach((track, index) => {
+                const tagsHtml = track.tags.map(t => `<span class="bg-[#141414] border border-[#262626] px-2.5 py-0.5 rounded text-[11px] text-gray-400">${t}</span>`).join('');
+                
+                const row = document.createElement('div');
+                row.className = `grid grid-cols-1 md:grid-cols-12 items-center px-4 py-3.5 hover:bg-[#121212] transition cursor-pointer group ${currentTrackIndex === track.id ? 'bg-[#18120e] border-l-4 border-orange-500' : ''}`;
+                row.onclick = () => selectAndPlayTrack(track.id);
+
+                row.innerHTML = `
+                    <div class="col-span-6 flex items-center space-x-4">
+                        <div class="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden">
+                            <img src="${track.img}" alt="${track.title}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid ${currentTrackIndex === track.id && isPlaying ? 'fa-pause' : 'fa-play'} text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white group-hover:text-orange-400 transition">${track.title}</div>
+                            <div class="text-xs text-gray-500 md:hidden mt-0.5">ZIXELLA • ${track.time} • ${track.bpm} BPM</div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block col-span-2 text-xs text-gray-400">${track.time}</div>
+                    <div class="hidden md:block col-span-1 text-xs text-gray-400">${track.bpm}</div>
+                    <div class="col-span-3 flex items-center justify-end space-x-3 mt-2 md:mt-0" onclick="event.stopPropagation()">
+                        <div class="hidden lg:flex space-x-1">${tagsHtml}</div>
+                        <button onclick="downloadFreeDemo()" title="Download Free Demo" class="text-gray-400 hover:text-white p-2 transition"><i class="fa-solid fa-download text-sm"></i></button>
+                        <button onclick="shareTrack()" title="Share Track" class="text-gray-400 hover:text-white p-2 transition"><i class="fa-solid fa-share-nodes text-sm"></i></button>
+                        <button onclick="openLicenseModal(${track.id})" class="bg-[#222] hover:bg-orange-500 hover:text-white text-gray-200 border border-[#333] px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>$${track.price.toFixed(2)}</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // Waveform Generator
+        function generateWaveformBars() {
+            const container = document.getElementById('waveform-container');
+            container.innerHTML = '';
+            for (let i = 0; i < 90; i++) {
+                const height = Math.floor(Math.random() * 40) + 15;
+                const bar = document.createElement('div');
+                bar.className = 'waveform-bar w-1.5 bg-gray-700 rounded-full hover:bg-orange-500';
+                bar.style.height = `${height}px`;
+                container.appendChild(bar);
+            }
+        }
+
+        // Switch Tabs
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Select & Play Track
+        function selectAndPlayTrack(id) {
+            currentTrackIndex = id;
+            updateHeroSection(id);
+            isPlaying = true;
+            document.getElementById('hero-play-btn').innerHTML = '<i class="fa-solid fa-pause ml-0"></i>';
+            document.getElementById('track-status-indicator').innerText = 'Playing now...';
+            renderBeatsList(tracks);
+            startPlaybackTimer();
+        }
+
+        function updateHeroSection(id) {
+            const track = tracks[id];
+            document.getElementById('hero-img').src = track.img;
+            document.getElementById('hero-title').innerText = track.title;
+            document.getElementById('hero-bpm').innerText = `🔥 ${track.bpm} BPM`;
+            document.getElementById('hero-key').innerText = `🎵 ${track.key}`;
+            document.getElementById('hero-date').innerText = `📅 ${track.date}`;
+            document.getElementById('hero-price-btn').innerText = `$${track.price.toFixed(2)}`;
+            
+            const tagsContainer = document.getElementById('hero-tags');
+            tagsContainer.innerHTML = track.tags.map(t => `<span class="bg-[#1a1a1a] border border-[#333] px-3 py-1 rounded-full text-xs text-gray-300">${t}</span>`).join('');
+        }
+
+        function togglePlayPause() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('hero-play-btn');
+            const status = document.getElementById('track-status-indicator');
+            if (isPlaying) {
+                btn.innerHTML = '<i class="fa-solid fa-pause ml-0"></i>';
+                status.innerText = 'Playing now...';
+                startPlaybackTimer();
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-play ml-1"></i>';
+                status.innerText = 'Paused';
+                stopPlaybackTimer();
+            }
+            renderBeatsList(tracks);
+        }
+
+        function startPlaybackTimer() {
+            stopPlaybackTimer();
+            playbackInterval = setInterval(() => {
+                if (isPlaying) {
+                    currentTimeSeconds++;
+                    if (currentTimeSeconds >= totalDurationSeconds) currentTimeSeconds = 0;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function stopPlaybackTimer() {
+            if (playbackInterval) clearInterval(playbackInterval);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(currentTimeSeconds / 60);
+            const secs = currentTimeSeconds % 60;
+            document.getElementById('current-time').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function seekAudio(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const width = rect.width;
+            const percentage = clickX / width;
+            currentTimeSeconds = Math.floor(totalDurationSeconds * percentage);
+            updateTimerDisplay();
+        }
+
+        // License Modal
+        function openLicenseModal(trackId) {
+            const track = tracks[trackId];
+            const modal = document.getElementById('license-modal');
+            const list = document.getElementById('license-options-list');
+            
+            const licenses = [
+                { name: "Basic License", desc: "WAV & MP3", price: track.price },
+                { name: "Premium License", desc: "WAV & MP3 (Commercial Use)", price: track.price + 20 },
+                { name: "Premium + Stems", desc: "STEMS, WAV & MP3", price: track.price + 60 },
+                { name: "Unlimited License", desc: "UNLIMITED STEMS & STREAMS", price: track.price + 160 }
+            ];
+
+            list.innerHTML = licenses.map((lic, idx) => `
+                <div class="bg-[#0c0c0c] border border-[#262626] rounded-xl p-4 flex items-center justify-between hover:border-orange-500 transition">
+                    <div>
+                        <h4 class="font-bold text-white text-base">${lic.name}</h4>
+                        <p class="text-xs text-gray-400 mb-2">${lic.desc}</p>
+                        <button onclick="toggleUsageTerms(${idx})" class="text-orange-400 text-xs hover:underline flex items-center space-x-1">
+                            <span>Show usage terms</span>
+                            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                        </button>
+                        <div id="terms-${idx}" class="hidden mt-3 text-xs text-gray-400 bg-[#141414] p-3 rounded border border-[#262626]">
+                            Includes Untagged audio files, commercial release rights up to allowed stream limits, and standard ZIXELLA beat producer agreement.
+                        </div>
+                    </div>
+                    <div class="text-right flex items-center space-x-4">
+                        <span class="text-lg font-bold text-white">$${lic.price.toFixed(2)}</span>
+                        <button onclick="addToCart('${track.title} (${lic.name})', ${lic.price}, 'Track')" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>$${lic.price.toFixed(2)}</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeLicenseModal() {
+            document.getElementById('license-modal').classList.add('hidden');
+        }
+
+        function toggleUsageTerms(idx) {
+            const el = document.getElementById(`terms-${idx}`);
+            el.classList.toggle('hidden');
+        }
+
+        // Cart Management
+        function addToCart(title, price, type) {
+            cart.push({ title, price, type });
+            updateCartUI();
+            showToast(`Added "${title}" to cart!`);
+            closeLicenseModal();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const count = cart.length;
+            document.getElementById('cart-count').innerText = count;
+            document.getElementById('cart-badge').innerText = count;
+            if (count > 0) {
+                document.getElementById('cart-badge').classList.remove('hidden');
+            } else {
+                document.getElementById('cart-badge').classList.add('hidden');
+            }
+
+            let subtotal = 0;
+            const container = document.getElementById('cart-items-container');
+            
+            if (count === 0) {
+                container.innerHTML = `<div class="text-center text-gray-500 py-12">Your cart is empty.</div>`;
+            } else {
+                container.innerHTML = cart.map((item, i) => `
+                    <div class="bg-[#0c0c0c] border border-[#262626] rounded-lg p-4 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-orange-500 font-semibold uppercase">${item.type}</div>
+                            <h4 class="text-sm font-bold text-white">${item.title}</h4>
+                            <div class="text-xs text-gray-400 mt-1">$${item.price.toFixed(2)}</div>
+                        </div>
+                        <button onclick="removeFromCart(${i})" class="text-gray-500 hover:text-red-400 text-sm p-2"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                `).join('');
+                subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+            }
+
+            document.getElementById('cart-total-header').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('translate-x-full');
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!');
+                return;
+            }
+            const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+            document.getElementById('checkout-modal-total').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('checkout-modal-final').innerText = `$${subtotal.toFixed(2)}`;
+            toggleCart();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function completePayment(method) {
+            closeCheckoutModal();
+            cart = [];
+            updateCartUI();
+            showToast(`Order successfully placed via ${method}! Check your email for files.`);
+        }
+
+        // Search Filter
+        function filterBeats() {
+            const query = document.getElementById('beat-search-input').value.toLowerCase();
+            const filtered = tracks.filter(t => t.title.toLowerCase().includes(query) || t.tags.some(tag => tag.toLowerCase().includes(query)));
+            renderBeatsList(filtered);
+        }
+
+        // Utilities
+        function downloadFreeDemo() {
+            showToast('Downloading untagged demo MP3 file...');
+        }
+
+        function shareTrack() {
+            showToast('Track link copied to clipboard!');
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            showToast('Message sent successfully! ZIXELLA will get back to you shortly.');
+            e.target.reset();
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        function toggleMobileMenu() {
+            switchTab('beats');
+            showToast('Navigation menu active');
+        }
+    </script>
+</body>
+</html>
